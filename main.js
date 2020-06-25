@@ -2,17 +2,31 @@ const selectCurrency = document.getElementById("currency");
 const nextPageButton = document.getElementById("nextPage");
 const backPageButton = document.getElementById("backPage");
 const backPageSearch = document.getElementById("backPageSearch");
+const priceRange = document.getElementById("priceRange");
+const submitButton = document.getElementById("searchSelection");
+const returnSearchButton = document.getElementById("returnSearch");
+const returnSearchAgain = document.getElementById("returnSearchAgain");
 const listings = document.querySelector("div.listing");
 const listingsModalOverlay = document.querySelector("div.listing-modal-overlay");
 const modalCurrencyOverlay = document.querySelector("div.modal-currency-overlay");
-const priceRange = document.getElementById("priceRange");
-const submitButton = document.getElementById("searchSelection");
+const failedModalOverlay = document.querySelector("div.failed-network-handling-overlay");
+const failedListings = document.querySelector("div.failed-handling-overlay");
+const fieldSet = document.querySelector("fieldset");
+let baseCurrency = null
+const currencyConverter = {
+  "USD": "$",
+  "CAD": "$",
+  "EUR": "\u20AC",
+  "JPY": "\u00A5",
+  "CNY": "\u00A5"
+}
 
 nextPageButton.addEventListener("click", hidePage);
 backPageButton.addEventListener("click", unhidePage);
-listingsModalOverlay.addEventListener("click", hideSearchPage);
+backPageSearch.addEventListener("click", hideSearchPage);
 selectCurrency.addEventListener("change", getCurrencyValue);
-
+returnSearchButton.addEventListener("click", closeModal);
+returnSearchAgain.addEventListener("click", returnSearch)
 // priceRange.addEventListener("change", getProductsValue);
 
 
@@ -25,8 +39,23 @@ function unhidePage(){
   modalCurrencyOverlay.classList.remove("hidden");
 }
 
+function closeModal(){
+  failedListings.classList.add("hidden");
+}
+
 function hideSearchPage(){
   listingsModalOverlay.classList.add("hidden");
+  fieldSet.disabled = false;
+
+  while(listings.firstChild){
+    listings.removeChild(listings.firstChild);
+  }
+  //AND DESTROY THE CHILDREN
+}
+
+function returnSearch(){
+  failedModalOverlay.classList.add("hidden");
+  modalCurrencyOverlay.classList.remove("hidden")
 }
 
 //Currency GET request
@@ -40,18 +69,19 @@ function getCurrency(exchange){
     $.ajax({
       method: "GET",
       url: "https://api.exchangeratesapi.io/latest?base=" + exchange,
-      success: this.handleGetCurrencySuccess,
-      error: this.handleGetCurrencyError
+      success: handleGetCurrencySuccess,
+      error: handleGetCurrencyError
     });
   }
 
 function handleGetCurrencySuccess(value) {
   console.log("success", value);
-  convertCurrency(value);
+  baseCurrency = value
 }
 
 function handleGetCurrencyError(error) {
   console.error("error", error);
+  failedModalOverlay.classList.remove("hidden");
 }
 
 //Products GET request
@@ -68,11 +98,15 @@ function getProducts(brand, product) {
 
 function handleGetProductsSuccess(data, brand, product){
   console.log("success", data);
+  if(data.length === 0){
+    failedListings.classList.remove("hidden");
+  }
   renderListings(data, brand, product)
 }
 
 function handleGetProductsError(error){
   console.error(error);
+  failedModalOverlay.classList.remove("hidden");
 }
 
 // function getProductsValue(){
@@ -85,14 +119,15 @@ const form = document.getElementById("form");
 form.addEventListener("submit", handleSubmitData);
 
 function handleSubmitData(event){
-event.preventDefault();
+  event.preventDefault();
   const formData = new FormData(form);
-const productBrand = formData.get("brand");
-const productName = formData.get("product");
-console.log(productName, productBrand)
+  const productName = formData.get("product");
+  const productBrand = formData.get("brand");
+  console.log(productName, productBrand)
   getProducts(productBrand, productName);
 // const productTag = formData.get("tag")
   form.reset();
+  fieldSet.disabled = true;
 }
 
 // if data[index].price <= value && data[index].prince >= price
@@ -115,37 +150,16 @@ function renderListings(data, brand, product){
     pProductBrand.textContent = data[index].brand;
     pName.textContent = data[index].name;
     pDesc.textContent = data[index].description;
-    pPrice.textContent = "$" + data[index].price;
-    // pPrice.textContent = convertCurrency(data);
-    // pPrice.textContent = "$" + (data[index].price * selectCurrency.value);
+    pDesc.classList.add("resize");
+
+        // if (data[index].price <= value && data[index].price >= price){
+        //
+        //}
+    pPrice.textContent = currencyConverter[baseCurrency.base] + (data[index].price / baseCurrency.rates.USD).toFixed(2); //converts a number into a string, rounding to a specified number of decimals
 
     containerDiv.append(pImage, pProductBrand, pName, pPrice, pDesc)
 
-
     listingsModalOverlay.classList.remove("hidden");
     listings.append(containerDiv);
-
-    // if (data[index].price <= value && data[index].price >= price)
   }
 }
-
-
-
-// function convertCurrency(exchange){
-//   console.log("test", exchange)
-
-//   var baseCurrency = exchange.base
-
-//   if (baseCurrency === "USD"){
-//     console.log("$ okay", exchange.rates.USD);
-
-//   } else if (baseCurrency === "EUR"){
-//     console.log("€ okay europe", exchange.rates.USD);
-//   } else if (baseCurrency === "CAD"){
-//     console.log("okay Canada $", exchange.rates.USD);
-//   } else if (baseCurrency === "JPY"){
-//     console.log("¥ hi japan", exchange.rates.USD);
-//   } else if (baseCurrency === "CNY"){
-//     console.log("¥ SUP CHINA", exchange.rates.USD);
-//   }
-// }

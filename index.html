@@ -2,7 +2,9 @@
 <html>
   <head>
     <title>LookUp App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Unica+One&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="style.css">
   </head>
@@ -10,9 +12,20 @@
 
     <div class="listing-modal-overlay hidden">
       <div class="listing"></div>
-      <button id="backPageSearch">Return</button>
+      <button class="backPageSearch" id="backPageSearch">Return</button>
     </div>
-
+    <div class="failed-handling-overlay hidden">
+      <div class="failed-handling">
+        <h1>Oops! We don't carry that!</h1>
+        <button class="returnSearch" id="returnSearch">Return</button>
+      </div>
+    </div>
+    <div class="failed-network-handling-overlay hidden">
+      <div class="failed-handling">
+        <h1>Oopsie Poopsie <i class="fa fa-wifi" aria-hidden="true"></i></h1>
+        <button class="returnSearch" id="returnSearchAgain">Return</button>
+      </div>
+    </div>
     <div class="modal-currency-overlay">
       <div class="modal-currency">
         <div>
@@ -20,7 +33,7 @@
         </div>
         <div>
           <select id="currency">
-          <option id ="none" value="none"><--Select--></option>
+          <option id ="none" value="none"><----Select----></option>
           <option id = "USD" value="USD">USD (usa)</option>
           <option id = "EUR" value="EUR">EUR (europe)</option>
           <option id = "CAD" value="CAD">CAD (canada)</option>
@@ -32,38 +45,67 @@
       <button class="currencyButton" type="submit" id="nextPage">Continue</button>
     </div>
 
-    <div>
-      <form id="form">
+    <main>
+      <div class="form-container">
         <div>
-          <label for="product">Search by Products:</label>
-          <input type="text" id ="product" name ="product" placeholder="ie. lipstick, eyeliner, foundation">
-        </div>
-        <div>
-          <label for="brand">Search by Brand:</label>
-          <input type="text" id ="brand" name ="brand" placeholder="ie. Covergirl, Rimmel, Maybelline">
-        </div>
-        <div>
-          <label for="tag">Search by Tags:</label>
-          <input type="text" id ="tag" name ="tag" placeholder="ie. dairy free, fair trade">
-        </div>
-        <div>
-          <h3>Search by Price:</h3>
-          <select name ="price" id="priceRange">
-            <option value="none"><--Select--></option>
-            <option value="0">&#36;0-&#36;10</option>
-            <option value="1">&#36;11-&#36;20</option>
-            <option value="2">&#36;21-&#36;30</option>
-            <option value="3">&#36;31 and up</option>
-          </select>
-        </div>
-        </div>
-        <input type="submit" value="Submit Here">
-        <!-- <button id="backPage">Return</button> -->
-        <!-- <button type="submit" id="searchSelection">Select Select</button> -->
-      </form>
-      <button id="backPage">Return</button>
+          <h1>Pick Out Your New Look:</h1>
+          <form id="form">
+            <fieldset>
+              <div>
+                <label for="product">Search by Products:</label>
+                <input class="search" type="text" id ="product" name ="product" placeholder="ie. lipstick, eyeliner, foundation">
+              </div>
+              <div>
+                <label for="brand">Search by Brand:</label>
+                <input class="search" type="text" id ="brand" name ="brand" placeholder="ie. Covergirl, Rimmel, Maybelline">
+              </div>
+              <div>
+                <label for="tag">Search by Tags:</label>
+                <input class="search" type="text" id ="tag" name ="tag" placeholder="ie. dairy free, fair trade">
+              </div>
+              <div>
+                <label for="price">Search by Price:</label>
+                <select name ="price" id="priceRange">
+                  <option value="none"><--Select--></option>
+                  <option value="0">&#36;0-&#36;10</option>
+                  <option value="1">&#36;11-&#36;20</option>
+                  <option value="2">&#36;21-&#36;30</option>
+                  <option value="3">&#36;31 and up</option>
+                </select>
+              </div>
+              </div>
+              <input class="submitSearch" type="submit" value="Submit Here">
+            </fieldset>
 
-    </div>
+          </form>
+          <button class="backPage" id="backPage">Return</button>
+        </div>
+      </div>
+    </main>
+
+    <!--
+        Need
+    - Loading screen to appear and disappear
+    - Prevent user from not continuing until they select a currency type
+    - Search by Tags
+    - Search by Price Range
+    - Title of main page
+    - Responsiveness for: Desktop (1900 x 950), iPad (Portrait & Landscape), iPhone 6/7/8 (Portrait & Landscape)
+    -->
+
+
+    <!--
+        Have
+    - Disable form after submission/Enable form after closing/viewing product lists
+    - Search by Products
+    - Search by Brands
+    - Search by specific exchange rate
+    - Resets on form for each call
+    - Option to change currency
+    - Client informed on failed api call for exchange rate
+    - Client informed on failed api call for products
+    - Client informed on empty API call
+  -->
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
     integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous">
