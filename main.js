@@ -12,7 +12,8 @@ const modalCurrencyOverlay = document.querySelector("div.modal-currency-overlay"
 const failedModalOverlay = document.querySelector("div.failed-network-handling-overlay");
 const failedListings = document.querySelector("div.failed-handling-overlay");
 const fieldSet = document.querySelector("fieldset");
-let baseCurrency = null
+let userPriceRange = null;
+let baseCurrency = null;
 const currencyConverter = {
   "USD": "$",
   "CAD": "$",
@@ -24,11 +25,10 @@ const currencyConverter = {
 nextPageButton.addEventListener("click", hidePage);
 backPageButton.addEventListener("click", unhidePage);
 backPageSearch.addEventListener("click", hideSearchPage);
-selectCurrency.addEventListener("change", getCurrencyValue);
 returnSearchButton.addEventListener("click", closeModal);
 returnSearchAgain.addEventListener("click", returnSearch)
-// priceRange.addEventListener("change", getProductsValue);
-
+priceRange.addEventListener("change", getProductsPriceRange);
+selectCurrency.addEventListener("change", getCurrencyValue);
 
 //temp Visual Function for Currency Select Menu
 function hidePage(){
@@ -58,6 +58,7 @@ function returnSearch(){
   failedModalOverlay.classList.add("hidden");
   modalCurrencyOverlay.classList.remove("hidden")
   fieldSet.disabled = false;
+  priceRange.value = 0;
 }
 
 //Currency GET request
@@ -97,8 +98,7 @@ function getProducts(brand, product) {
   })
 }
 
-
-function handleGetProductsSuccess(data, brand, product){
+function handleGetProductsSuccess(data, brand){
   console.log("success", data);
   if(data.length === 0){
     failedListings.classList.remove("hidden");
@@ -111,10 +111,12 @@ function handleGetProductsError(error){
   failedModalOverlay.classList.remove("hidden");
 }
 
-// function getProductsValue(){
-//   getProducts(priceRange.value);
-//   console.log(priceRange.value);
-// }
+function getProductsPriceRange(value){
+  // getProducts(priceRange.value);
+  userPriceRange = priceRange.value;
+  console.log(priceRange.value);
+  console.log(userPriceRange);
+}
 
 const form = document.getElementById("form");
 
@@ -129,6 +131,7 @@ function handleSubmitData(event){
   getProducts(productBrand, productName);
 // const productTag = formData.get("tag")
   form.reset();
+  priceRange.selectedIndex = "0";
   fieldSet.disabled = true;
 }
 
@@ -138,6 +141,7 @@ function handleSubmitData(event){
 //else if else if else if else if else if
 
 function renderListings(data, brand, product){
+
   for (let index = 0; index < data.length; index++) {
 
     const containerDiv = document.createElement("div");
@@ -158,7 +162,13 @@ function renderListings(data, brand, product){
         //
         //}
     pPrice.textContent = currencyConverter[baseCurrency.base] + (data[index].price / baseCurrency.rates.USD).toFixed(2); //converts a number into a string, rounding to a specified number of decimals
+  //   pPrice.textContent = userPriceRange;
 
+  //   if (userPriceRange === "1"){
+  //   console.log("That cheap shit");
+  // } else {
+  //   console.log("shrug");
+  // }
     containerDiv.append(pImage, pProductBrand, pName, pPrice, pDesc)
 
     listingsModalOverlay.classList.remove("hidden");

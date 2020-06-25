@@ -1,7 +1,3 @@
-/* body{
-background-image: url("img/background.jpg");
-} */
-
 h1 {
   font-family: 'Unica One', cursive;
 }
@@ -59,6 +55,20 @@ label{
   text-align: center;
   position: relative;
   font-family: 'Unica One', cursive;
+}
+
+.appName-1, .appName-2{
+  font-size: 80px;
+}
+
+.appName-1 {
+  position: relative;
+  right: 10%;
+}
+
+.appName-2{
+  position: relative;
+  left: 10%;
 }
 
 .listing {
