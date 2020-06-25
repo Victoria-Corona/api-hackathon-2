@@ -41,6 +41,7 @@ function unhidePage(){
 
 function closeModal(){
   failedListings.classList.add("hidden");
+  fieldSet.disabled = false;
 }
 
 function hideSearchPage(){
@@ -56,6 +57,7 @@ function hideSearchPage(){
 function returnSearch(){
   failedModalOverlay.classList.add("hidden");
   modalCurrencyOverlay.classList.remove("hidden")
+  fieldSet.disabled = false;
 }
 
 //Currency GET request
