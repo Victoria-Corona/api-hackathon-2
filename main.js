@@ -94,7 +94,6 @@ function getProducts(brand, product, tag) {
   $.ajax({
     method: "GET",
     url: "http://makeup-api.herokuapp.com/api/v1/products.json?brand=" + brand + "&product_type=" + product + "&product_tags=" + tag,
-    timeout: 2000,
     beforeSend: function () {
       loading.classList.remove("hidden");
       console.log("Loading");
@@ -197,6 +196,7 @@ console.log(data)
     const pImage = document.createElement("img");
     const aTag = document.createElement("a");
     aTag.setAttribute("href", data[index].product_link);
+    aTag.setAttribute("target", "_blank");
 
     pImage.src = data[index].image_link;
     pProductBrand.textContent = data[index].brand;
