@@ -12,6 +12,7 @@ const modalCurrencyOverlay = document.querySelector("div.modal-currency-overlay"
 const failedModalOverlay = document.querySelector("div.failed-network-handling-overlay");
 const failedListings = document.querySelector("div.failed-handling-overlay");
 const fieldSet = document.querySelector("fieldset");
+const loading = document.querySelector("div.loading-files-overlay");
 let userPriceRange = null;
 let baseCurrency = null;
 const currencyConverter = {
@@ -22,7 +23,7 @@ const currencyConverter = {
   "CNY": "\u00A5"
 }
 
-nextPageButton.addEventListener("click", hidePage);
+// nextPageButton.addEventListener("click", hidePage);
 backPageButton.addEventListener("click", unhidePage);
 backPageSearch.addEventListener("click", hideSearchPage);
 returnSearchButton.addEventListener("click", closeModal);
@@ -51,7 +52,6 @@ function hideSearchPage(){
   while(listings.firstChild){
     listings.removeChild(listings.firstChild);
   }
-  //AND DESTROY THE CHILDREN
 }
 
 function returnSearch(){
@@ -65,6 +65,7 @@ function returnSearch(){
 function getCurrencyValue(){
   getCurrency(selectCurrency.value);
   console.log(selectCurrency.value)
+  nextPageButton.addEventListener("click", hidePage);
 }
 
 function getCurrency(exchange){
@@ -88,14 +89,50 @@ function handleGetCurrencyError(error) {
 }
 
 //Products GET request
-function getProducts(brand, product) {
-  console.log(brand, product);
+function getProducts(brand, product, tag) {
+  console.log(brand, product, tag);
   $.ajax({
     method: "GET",
-    url: "http://makeup-api.herokuapp.com/api/v1/products.json?brand=" + brand + "&product_type=" + product,
+    url: "http://makeup-api.herokuapp.com/api/v1/products.json?brand=" + brand + "&product_type=" + product + "&product_tags=" + tag,
+    timeout: 2000,
+    beforeSend: function () {
+      loading.classList.remove("hidden");
+      console.log("Loading");
+    },
+    complete: function () {
+      loading.classList.add("hidden");
+      console.log("done");
+    },
     success: handleGetProductsSuccess,
     error: handleGetProductsError
   })
+}
+
+function getPriceRange() {
+  var ranges = {
+    '1': {
+      max: 10,
+      min: 0
+    },
+    '2': {
+      max: 20,
+      min: 11
+    },
+    '3': {
+      max: 30,
+      min: 21
+    },
+    '4': {
+      max: Infinity,
+      min: 31
+    }
+  }
+
+  if(userPriceRange) {
+    return ranges[userPriceRange]
+  } else {
+    return null
+  }
 }
 
 function handleGetProductsSuccess(data, brand){
@@ -103,16 +140,29 @@ function handleGetProductsSuccess(data, brand){
   if(data.length === 0){
     failedListings.classList.remove("hidden");
   }
-  renderListings(data, brand, product)
+  console.log(data)
+
+  const priceRange = getPriceRange()
+  if(!priceRange) {
+    renderListings(data, brand, product)
+  } else {
+    const newData = []
+    for(let i = 0; i < data.length; i++) {
+      const price = Number(data[i].price)
+      if(price <= priceRange.max && price >= priceRange.min) {
+        newData.push(data[i])
+      }
+    }
+    renderListings(newData, brand, product)
+  }
 }
 
 function handleGetProductsError(error){
-  console.error(error);
+  console.error("bruh", error);
   failedModalOverlay.classList.remove("hidden");
 }
 
 function getProductsPriceRange(value){
-  // getProducts(priceRange.value);
   userPriceRange = priceRange.value;
   console.log(priceRange.value);
   console.log(userPriceRange);
@@ -127,51 +177,44 @@ function handleSubmitData(event){
   const formData = new FormData(form);
   const productName = formData.get("product");
   const productBrand = formData.get("brand");
-  console.log(productName, productBrand)
-  getProducts(productBrand, productName);
-// const productTag = formData.get("tag")
+  const productTag = formData.get("tag")
+  console.log(productName, productBrand, productTag)
+  getProducts(productBrand, productName, productTag);
+
   form.reset();
   priceRange.selectedIndex = "0";
   fieldSet.disabled = true;
 }
 
-// if data[index].price <= value && data[index].prince >= price
-//if option value 1 is picked, run a condition to check if
-//price is within hard coded numbers
-//else if else if else if else if else if
-
 function renderListings(data, brand, product){
-
+console.log(data)
   for (let index = 0; index < data.length; index++) {
-
     const containerDiv = document.createElement("div");
     const pProductBrand = document.createElement("p");
     const pDesc = document.createElement("p");
-    const pName = document.createElement("p");
     const pPrice = document.createElement("p");
     const pTags = document.createElement("p");
     const pImage = document.createElement("img");
+    const aTag = document.createElement("a");
+    aTag.setAttribute("href", data[index].product_link);
 
     pImage.src = data[index].image_link;
     pProductBrand.textContent = data[index].brand;
-    pName.textContent = data[index].name;
+    aTag.textContent = data[index].name;
+
+
     pDesc.textContent = data[index].description;
     pDesc.classList.add("resize");
+    pTags.textContent = data[index].tag_list;
 
-        // if (data[index].price <= value && data[index].price >= price){
-        //
-        //}
     pPrice.textContent = currencyConverter[baseCurrency.base] + (data[index].price / baseCurrency.rates.USD).toFixed(2); //converts a number into a string, rounding to a specified number of decimals
-  //   pPrice.textContent = userPriceRange;
 
-  //   if (userPriceRange === "1"){
-  //   console.log("That cheap shit");
-  // } else {
-  //   console.log("shrug");
-  // }
-    containerDiv.append(pImage, pProductBrand, pName, pPrice, pDesc)
+    containerDiv.append(pImage, pProductBrand, aTag, pPrice, pDesc, pTags)
 
     listingsModalOverlay.classList.remove("hidden");
     listings.append(containerDiv);
+  }
+  if (data.length === 0) {
+    failedListings.classList.remove("hidden");
   }
 }
