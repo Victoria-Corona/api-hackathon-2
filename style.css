@@ -1,13 +1,22 @@
-/* body{
-background-image: url("img/background.jpg");
-} */
-
-h1 {
+h1, .search, label,
+select, .currencyButton,
+.backPageSearch,
+.backPage,
+.submitSearch,
+.returnSearch,
+.modal-currency,
+.listing,
+.failed-handling, p {
   font-family: 'Unica One', cursive;
 }
 
+label, .search,
+option {
+  font-size: 16px;
+}
+
 main {
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -18,19 +27,24 @@ main {
 
 .search {
   width: 250px;
-  font-family: 'Unica One', cursive;
 }
 
 label{
-  font-family: 'Unica One', cursive;
   display: inline-block;
   width: 140px;
-  text-align: center;
+  text-align: left;
   height: 50px;
 }
 
+fieldset {
+  padding: 0px;
+}
+
 .modal-currency-overlay,
-.listing-modal-overlay {
+.listing-modal-overlay,
+.loading-files-overlay,
+.failed-handling-overlay,
+.failed-network-handling-overlay {
   position: fixed;
   display: flex;
   justify-content: center;
@@ -39,6 +53,12 @@ label{
   height: 100vh;
   width: 100%;
   max-width: 100%;
+  z-index: 1;
+  background-color: rgb(0,0,0, 0.4);
+}
+
+.modal-currency-overlay,
+.listing-modal-overlay {
   background-image: url("img/background.jpg");
   background-size: cover;
   background-repeat: no-repeat;
@@ -50,63 +70,85 @@ label{
 }
 
 .modal-currency, .listing, .failed-handling {
-  background-color: white;
+  background-color: #ffffff;
   border: solid 5px black;
-  box-shadow: 0px 0px 100px rgb(255, 255, 255);
+  box-shadow: 0px 0px 100px #ffffff;
   width: 600px;
   padding: 10px;
   text-align: center;
   position: relative;
-  font-family: 'Unica One', cursive;
+}
+
+.appName-1, .appName-2{
+  font-size: 80px;
+}
+
+.appName-1 {
+  position: relative;
+  right: 10%;
+  text-shadow: 0px 0px 10px #ffffff;
+}
+
+.appName-2 {
+  position: relative;
+  left: 10%;
+  text-shadow: 0px 0px 10px #ffffff;
 }
 
 .listing {
-  background-color: white;
-}
-
-.listing > div > p {
-  font-family: 'Comfortaa', cursive;
+  background-color: #ffffff;
 }
 
 .resize {
-  font-size: 12px;
+  font-size: 14px;
+  font-family: 'Comfortaa', cursive;
 }
 
 select {
-  font-family:'Unica One', cursive;
   border-radius: 50px;
 }
 
 select:focus{
   outline: none;
-  border-color: gray;
+  border-color: #727272;
 }
 
 .currencyButton {
-  font-family:'Unica One', cursive;
   position: absolute;
   bottom: 24%;
   padding: 10px;
   border-radius: 50px;
-  background-color: white;
+  background-color: #ffffff;
   border: 0px;
 }
 
 .backPageSearch {
   position: absolute;
   bottom: 10%;
-  font-family:'Unica One', cursive;
   padding: 10px;
   border-radius: 50px;
-  background-color: white;
+  background-color: #ffffff;
   border: 0px;
 }
 
+.form-container {
+  position: relative;
+}
+
+.submitSearch {
+position: absolute;
+right: 5%;
+}
+
+.backPage {
+  position: absolute;
+  right: 25%;
+}
+
 .backPage, .submitSearch, .returnSearch {
-  font-family:'Unica One', cursive;
   padding: 10px;
   border-radius: 50px;
-  background-color: white;
+  background-color: #ffffff;
 }
 
 .backPage:active, .submitSearch:active, .returnSearch:active{
@@ -128,14 +170,30 @@ select:focus{
 
 .listing {
   height: 50%;
+  padding: 10px;
   overflow: scroll;
+  overflow-x: hidden;
+}
+
+.listing::-webkit-scrollbar{
+  width: 5px;
+  border-radius: 50px;
+}
+
+.listing::-webkit-scrollbar-thumb{
+  background: #888888;
+  border-radius: 8px;
+}
+
+.listing::-webkit-scrollbar-thumb:hover{
+  background: #000000;
 }
 
 .form-container {
-  background-color: white;
-  border: solid 5px black;
+  background-color: #ffffff;
+  border: solid 5px #000000;
   padding: 4rem;
-  box-shadow: 0px 0px 100px rgb(255, 255, 255);
+  box-shadow: 0px 0px 100px #ffffff;
 }
 
 .form-container > div {
@@ -152,16 +210,23 @@ img {
   width: 100px;
 }
 
-.failed-handling-overlay,
-.failed-network-handling-overlay {
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  height: 100vh;
-  width: 100%;
-  max-width: 100%;
+.failed-handling {
+  width: 50%;
+}
+
+.loading-files {
+  border: 16px solid #ffffff;
+  border-top: 16px solid #b76e79;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  z-index: 1;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
 }
 
 .hidden {
