@@ -19,6 +19,8 @@ that product is at their desired exchange rate.
 
 ## Preview
 ![PREVIEW ONE](img/demo_1.jpg)
+![PREVIEW TWO](img/demo_2.jpg)
+![PREVIEW THREE](img/demo_3.jpg)
 
 ## Getting Started
 1. Clone the repo and navigate to the directory
