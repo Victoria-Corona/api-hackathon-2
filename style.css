@@ -1,3 +1,11 @@
+body {
+  background-image: url("img/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh;
+}
+
 h1, .search, label,
 select, .currencyButton,
 .backPageSearch,
@@ -19,14 +27,18 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+  align-content: center;
   height: 100vh;
-  background-image: url("img/background.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
+  width: 100%;
 }
 
 .search {
   width: 250px;
+  display: inline-block;
+}
+
+.form-bock {
+  padding: 0.5rem 0;
 }
 
 label{
@@ -38,6 +50,7 @@ label{
 
 fieldset {
   padding: 0px;
+  margin: 0px;
 }
 
 .modal-currency-overlay,
@@ -49,19 +62,20 @@ fieldset {
   display: flex;
   justify-content: center;
   align-items: center;
-  align-content: center;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   max-width: 100%;
   z-index: 1;
-  background-color: rgb(0,0,0, 0.4);
 }
 
-.modal-currency-overlay,
-.listing-modal-overlay {
-  background-image: url("img/background.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
+.failed-network-handling-overlay {
+  z-index: 2;
+}
+
+.loading-files-overlay,
+.failed-handling-overlay,
+.failed-network-handling-overlay{
+  background-color: rgb(0,0,0, 0.4);
 }
 
 .listing-modal-overlay{
@@ -73,7 +87,7 @@ fieldset {
   background-color: #ffffff;
   border: solid 5px black;
   box-shadow: 0px 0px 100px #ffffff;
-  width: 600px;
+  width: 650px;
   padding: 10px;
   text-align: center;
   position: relative;
@@ -102,6 +116,7 @@ fieldset {
 .resize {
   font-size: 14px;
   font-family: 'Comfortaa', cursive;
+  text-align: left;
 }
 
 select {
@@ -116,10 +131,12 @@ select:focus{
 .currencyButton {
   position: absolute;
   bottom: 24%;
+  left: 50%;
   padding: 10px;
   border-radius: 50px;
   background-color: #ffffff;
   border: 0px;
+
 }
 
 .backPageSearch {
@@ -131,19 +148,20 @@ select:focus{
   border: 0px;
 }
 
-.form-container {
-  position: relative;
-}
-
 .submitSearch {
 position: absolute;
 right: 5%;
+}
+
+.submitSearch:active {
+  background-color: rgb(254, 255, 221);
 }
 
 .backPage {
   position: absolute;
   right: 25%;
 }
+
 
 .backPage, .submitSearch, .returnSearch {
   padding: 10px;
@@ -153,6 +171,10 @@ right: 5%;
 
 .backPage:active, .submitSearch:active, .returnSearch:active{
   transform: scale(1.1);
+}
+
+.backPage:active{
+  background-color: rgb(207, 116, 116);
 }
 
 .backPage:focus, .submitSearch:focus, .returnSearch:focus{
@@ -166,6 +188,13 @@ right: 5%;
 
 .currencyButton:focus, .backPageSearch:focus{
   outline: none;
+}
+
+.currencyButton:hover, .backPageSearch:hover,
+.backPage:hover, .submitSearch:hover, .returnSearch:hover,
+select:hover, option
+{
+  cursor: pointer;
 }
 
 .listing {
@@ -194,10 +223,21 @@ right: 5%;
   border: solid 5px #000000;
   padding: 4rem;
   box-shadow: 0px 0px 100px #ffffff;
+  position: relative;
 }
 
 .form-container > div {
   text-align: center;
+}
+
+input {
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 2px;
+}
+
+form {
+  margin: auto;
 }
 
 fieldset {
@@ -231,4 +271,46 @@ img {
 
 .hidden {
   visibility: hidden;
+}
+
+
+/* iPad Portrait*/
+@media screen and (max-width: 768px) {
+
+  .appName-1, .appName-2{
+    right: 0;
+    left: 0;
+  }
+
+  .modal-currency-overlay {
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+
+  main {
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-content: center;
+  }
+  input {
+    padding: 0 4px;
+  }
+
+  .currencyButton {
+    position: aboslute;
+    left: 45%;
+  }
+}
+
+/* iPad Landscape */
+@media screen and (max-width: 1024px){
+
+  .appName-1 {
+    right: 2%;
+  }
+
+  .appName-2 {
+    left: 2%;
+  }
+
 }
