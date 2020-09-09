@@ -23,7 +23,7 @@ that product is at their desired exchange rate.
 ![PREVIEW THREE](img/demo_3.jpg)
 
 ## Getting Started
-1. Clone the repo and navigate to the directory
+1. Clone the repository and navigate to the directory
 ```
 git clone https://github.com/Victoria-Corona/look-up
 ```
