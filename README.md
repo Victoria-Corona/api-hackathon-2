@@ -4,6 +4,8 @@ that product is at their desired exchange rate.
 
 ## Live Link
 
+[Look Up](https://look-up.coronacoding.com/)
+
 ## Technologies Used
 + HTML 5
 + JavaScript (ES6)
