@@ -98,7 +98,7 @@ function handleGetCurrencyError(error) {
 function getProducts(brand, product, tag) {
   $.ajax({
     method: "GET",
-    url: "http://makeup-api.herokuapp.com/api/v1/products.json?brand=" + brand + "&product_type=" + product + "&product_tags=" + tag,
+    url: "https://makeup-api.herokuapp.com/api/v1/products.json?brand=" + brand + "&product_type=" + product + "&product_tags=" + tag,
     beforeSend: function () {
       loading.classList.remove("hidden");
     },
