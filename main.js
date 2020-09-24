@@ -7,6 +7,9 @@ const returnSearchButton = document.getElementById("returnSearch");
 const returnSearchAgain = document.getElementById("returnSearchAgain");
 const selectCurrency = document.getElementById("currency");
 const submitButton = document.getElementById("searchSelection");
+const product = document.getElementById("product")
+const brand = document.getElementById("brand")
+const tag = document.getElementById("tag")
 
 const failedModalOverlay = document.querySelector("div.failed-network-handling-overlay");
 const failedListings = document.querySelector("div.failed-handling-overlay");
@@ -167,6 +170,13 @@ function getProductsPriceRange(value){
 }
 
 function handleSubmitData(event){
+
+  if (product.value === "" && brand.value === "" && tag.value === "" && !userPriceRange){
+    alert("Fill ONE field please");
+    event.preventDefault();
+    form.reset();
+    priceRange.selectedIndex = "0";
+  } else {
   event.preventDefault();
   const formData = new FormData(form);
   const productName = formData.get("product");
@@ -177,6 +187,7 @@ function handleSubmitData(event){
   form.reset();
   priceRange.selectedIndex = "0";
   fieldSet.disabled = true;
+  }
 }
 
 function renderListings(data, brand, product){
