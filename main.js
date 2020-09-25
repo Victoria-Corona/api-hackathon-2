@@ -59,7 +59,7 @@ function hideSearchPage(){
   listingsModalOverlay.classList.add("hidden");
   main.classList.remove("hidden");
   fieldSet.disabled = false;
-
+  priceRange.selectedIndex = "0";
   while(listings.firstChild){
     listings.removeChild(listings.firstChild);
   }
@@ -187,6 +187,7 @@ function handleSubmitData(event){
   form.reset();
   priceRange.selectedIndex = "0";
   fieldSet.disabled = true;
+  userPriceRange = null;
   }
 }
 
@@ -229,4 +230,8 @@ function renderListings(data, brand, product){
 
 function errorLoad(image){
   image.src = "img/not_found.png";
+}
+
+function emptyForm(){
+
 }
