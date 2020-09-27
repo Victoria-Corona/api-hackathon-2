@@ -11,6 +11,8 @@ const product = document.getElementById("product")
 const brand = document.getElementById("brand")
 const tag = document.getElementById("tag")
 
+const formValidation = document.getElementById("formValidation");
+
 const failedModalOverlay = document.querySelector("div.failed-network-handling-overlay");
 const failedListings = document.querySelector("div.failed-handling-overlay");
 const fieldSet = document.querySelector("fieldset");
@@ -37,6 +39,10 @@ priceRange.addEventListener("change", getProductsPriceRange);
 returnSearchButton.addEventListener("click", closeModal);
 returnSearchAgain.addEventListener("click", returnSearch)
 selectCurrency.addEventListener("change", getCurrencyValue);
+product.addEventListener("keydown", errorHandling)
+brand.addEventListener("keydown", errorHandling);
+tag.addEventListener("keydown", errorHandling);
+priceRange.addEventListener("change", errorHandling);
 
 //temp Visual Functions
 function hidePage(){
@@ -47,6 +53,7 @@ function hidePage(){
 function unhidePage(){
   modalCurrencyOverlay.classList.remove("hidden");
   main.classList.add("hidden");
+  errorHandling();
 }
 
 function closeModal(){
@@ -115,6 +122,10 @@ function getProducts(brand, product, tag) {
 
 function getPriceRange() {
   var ranges = {
+    '0':{
+      max: Infinity,
+      min: 0
+    },
     '1': {
       max: 10,
       min: 0
@@ -172,22 +183,26 @@ function getProductsPriceRange(value){
 function handleSubmitData(event){
 
   if (product.value === "" && brand.value === "" && tag.value === "" && !userPriceRange){
-    alert("Fill ONE field please");
+    formValidation.textContent = "Please fill one field"
+    product.classList.add("error")
+    brand.classList.add("error")
+    tag.classList.add("error")
+    priceRange.classList.add("error")
     event.preventDefault();
     form.reset();
-    priceRange.selectedIndex = "0";
   } else {
-  event.preventDefault();
-  const formData = new FormData(form);
-  const productName = formData.get("product");
-  const productBrand = formData.get("brand");
-  const productTag = formData.get("tag")
-  getProducts(productBrand, productName, productTag);
+    event.preventDefault();
+    const formData = new FormData(form);
+    const productName = formData.get("product");
+    const productBrand = formData.get("brand");
+    const productTag = formData.get("tag")
+    getProducts(productBrand, productName, productTag);
 
-  form.reset();
-  priceRange.selectedIndex = "0";
-  fieldSet.disabled = true;
-  userPriceRange = null;
+    form.reset();
+    priceRange.selectedIndex = "0";
+    fieldSet.disabled = true;
+    userPriceRange = null;
+    formValidation.textContent = ""
   }
 }
 
@@ -232,6 +247,10 @@ function errorLoad(image){
   image.src = "img/not_found.png";
 }
 
-function emptyForm(){
-
+function errorHandling(){
+  product.classList.remove("error");
+  brand.classList.remove("error");
+  tag.classList.remove("error");
+  priceRange.classList.remove("error")
+  formValidation.textContent = "";
 }
