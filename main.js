@@ -7,6 +7,11 @@ const returnSearchButton = document.getElementById("returnSearch");
 const returnSearchAgain = document.getElementById("returnSearchAgain");
 const selectCurrency = document.getElementById("currency");
 const submitButton = document.getElementById("searchSelection");
+const product = document.getElementById("product")
+const brand = document.getElementById("brand")
+const tag = document.getElementById("tag")
+
+const formValidation = document.getElementById("formValidation");
 
 const failedModalOverlay = document.querySelector("div.failed-network-handling-overlay");
 const failedListings = document.querySelector("div.failed-handling-overlay");
@@ -34,6 +39,10 @@ priceRange.addEventListener("change", getProductsPriceRange);
 returnSearchButton.addEventListener("click", closeModal);
 returnSearchAgain.addEventListener("click", returnSearch)
 selectCurrency.addEventListener("change", getCurrencyValue);
+product.addEventListener("keydown", errorHandling)
+brand.addEventListener("keydown", errorHandling);
+tag.addEventListener("keydown", errorHandling);
+priceRange.addEventListener("change", errorHandling);
 
 //temp Visual Functions
 function hidePage(){
@@ -44,6 +53,7 @@ function hidePage(){
 function unhidePage(){
   modalCurrencyOverlay.classList.remove("hidden");
   main.classList.add("hidden");
+  errorHandling();
 }
 
 function closeModal(){
@@ -56,7 +66,7 @@ function hideSearchPage(){
   listingsModalOverlay.classList.add("hidden");
   main.classList.remove("hidden");
   fieldSet.disabled = false;
-
+  priceRange.selectedIndex = "0";
   while(listings.firstChild){
     listings.removeChild(listings.firstChild);
   }
@@ -112,6 +122,10 @@ function getProducts(brand, product, tag) {
 
 function getPriceRange() {
   var ranges = {
+    '0':{
+      max: Infinity,
+      min: 0
+    },
     '1': {
       max: 10,
       min: 0
@@ -167,16 +181,29 @@ function getProductsPriceRange(value){
 }
 
 function handleSubmitData(event){
-  event.preventDefault();
-  const formData = new FormData(form);
-  const productName = formData.get("product");
-  const productBrand = formData.get("brand");
-  const productTag = formData.get("tag")
-  getProducts(productBrand, productName, productTag);
 
-  form.reset();
-  priceRange.selectedIndex = "0";
-  fieldSet.disabled = true;
+  if (product.value === "" && brand.value === "" && tag.value === "" && !userPriceRange){
+    formValidation.textContent = "Please fill one field"
+    product.classList.add("error")
+    brand.classList.add("error")
+    tag.classList.add("error")
+    priceRange.classList.add("error")
+    event.preventDefault();
+    form.reset();
+  } else {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const productName = formData.get("product");
+    const productBrand = formData.get("brand");
+    const productTag = formData.get("tag")
+    getProducts(productBrand, productName, productTag);
+
+    form.reset();
+    priceRange.selectedIndex = "0";
+    fieldSet.disabled = true;
+    userPriceRange = null;
+    formValidation.textContent = ""
+  }
 }
 
 function renderListings(data, brand, product){
@@ -218,4 +245,12 @@ function renderListings(data, brand, product){
 
 function errorLoad(image){
   image.src = "img/not_found.png";
+}
+
+function errorHandling(){
+  product.classList.remove("error");
+  brand.classList.remove("error");
+  tag.classList.remove("error");
+  priceRange.classList.remove("error")
+  formValidation.textContent = "";
 }

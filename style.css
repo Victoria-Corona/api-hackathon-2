@@ -14,7 +14,8 @@ select, .currencyButton,
 .returnSearch,
 .modal-currency,
 .listing,
-.failed-handling, p {
+.failed-handling, p,
+.formValidation {
   font-family: 'Unica One', cursive;
 }
 
@@ -37,7 +38,7 @@ main {
   display: inline-block;
 }
 
-.form-bock {
+.form-block {
   padding: 0.5rem 0;
 }
 
@@ -45,7 +46,7 @@ label{
   display: inline-block;
   width: 140px;
   text-align: left;
-  height: 50px;
+  /* height: 50px; */
 }
 
 fieldset {
@@ -162,7 +163,6 @@ right: 5%;
   right: 25%;
 }
 
-
 .backPage, .submitSearch, .returnSearch {
   padding: 10px;
   border-radius: 50px;
@@ -231,9 +231,19 @@ select:hover, option
 }
 
 input {
-    box-sizing: border-box;
-    display: inline-block;
-    padding: 2px;
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 0 4px;
+}
+
+.error {
+  border: 1px solid #b42c41;
+  border-radius: 2px;
+}
+
+.formValidation {
+  margin: 0 0 1rem 0;
+  color: #b42c41;
 }
 
 form {
@@ -292,12 +302,9 @@ img {
     flex-direction: column;
     align-content: center;
   }
-  input {
-    padding: 0 4px;
-  }
 
   .currencyButton {
-    position: aboslute;
+    position: absolute;
     left: 45%;
   }
 }
