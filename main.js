@@ -23,7 +23,6 @@ const main = document.querySelector("main");
 const modalCurrencyOverlay = document.querySelector("div.modal-currency-overlay");
 
 let userPriceRange = null;
-console.log(userPriceRange)
 let baseCurrency = null;
 const currencyConverter = {
   "USD": "$",
@@ -124,7 +123,6 @@ function getProducts(brand, product, tag) {
 }
 
 function getPriceRange() {
-  console.log(userPriceRange)
   var ranges = {
     '1': {
       max: 10,
@@ -179,7 +177,6 @@ function handleGetProductsError(error){
 
 function getProductsPriceRange(value){
   userPriceRange = Number(priceRange.value);
-  console.log(userPriceRange)
 }
 
 function handleSubmitData(event){
@@ -198,7 +195,7 @@ function handleSubmitData(event){
     const productName = formData.get("product");
     const productBrand = formData.get("brand");
     const productTag = formData.get("tag")
-    console.log(userPriceRange)
+
     getProducts(productBrand, productName, productTag);
 
     form.reset();
