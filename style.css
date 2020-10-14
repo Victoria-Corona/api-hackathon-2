@@ -46,7 +46,6 @@ label{
   display: inline-block;
   width: 140px;
   text-align: left;
-  /* height: 50px; */
 }
 
 fieldset {
@@ -161,6 +160,7 @@ right: 5%;
 .backPage {
   position: absolute;
   right: 25%;
+  border: solid 1px;
 }
 
 .backPage, .submitSearch, .returnSearch {
@@ -234,6 +234,8 @@ input {
   box-sizing: border-box;
   display: inline-block;
   padding: 0 4px;
+  border: solid 1px;
+  border-radius: 2px;
 }
 
 .error {
@@ -284,40 +286,133 @@ img {
 }
 
 
-/* iPad Portrait*/
-@media screen and (max-width: 768px) {
-
-  .appName-1, .appName-2{
-    right: 0;
-    left: 0;
-  }
+/* iPad Portrait */
+@media screen and (max-width: 768px) and (orientation: portrait) {
 
   .modal-currency-overlay {
     flex-wrap: wrap;
     flex-direction: column;
+    justify-content: center;
   }
 
   main {
     flex-wrap: wrap;
     flex-direction: column;
+    justify-content: center;
     align-content: center;
   }
 
-  .currencyButton {
-    position: absolute;
-    left: 45%;
+  .backPageSearch {
+    bottom: 18%;
   }
+
+  .backPageSearch, .currencyButton {
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .currencyButton {
+    left: 45%
+  }
+
+  select, input, button {
+    height: 40px;
+    font-size: 20px;
+  }
+
+  label {
+    font-size: 20px;
+    width: 180px;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-container {
+    height: 50%;
+    width: 90%
+  }
+
+  .submitSearch, .backPage {
+    bottom: 15%;
+  }
+
+  .resize, .listing {
+    font-size: 20px
+  }
+
+  .search {
+    width: 350px;
+    font-size: 20px
+  }
+
+  input::placeholder {
+    font-size: 20px;
+  }
+
 }
 
 /* iPad Landscape */
-@media screen and (max-width: 1024px){
+@media screen and (max-width: 1024px) and (orientation: landscape) {
 
   .appName-1 {
-    right: 2%;
+    right: 5%;
   }
 
   .appName-2 {
-    left: 2%;
+    left: 5%
+  }
+
+  .backPageSearch {
+    bottom: 18%;
+  }
+
+  .backPageSearch, .currencyButton {
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  select, input, button {
+    height: 40px;
+    font-size: 20px;
+  }
+
+  label {
+    font-size: 20px;
+    width: 180px;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-container {
+    height: 65%;
+    width: 70%
+  }
+
+  .submitSearch, .backPage {
+    bottom: 5%;
+  }
+
+  .resize, .listing {
+    font-size: 20px
+  }
+
+  .search {
+    width: 350px;
+    font-size: 20px
+  }
+
+  input::placeholder {
+    font-size: 20px;
   }
 
 }

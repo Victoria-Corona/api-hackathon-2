@@ -60,6 +60,8 @@ function closeModal(){
   failedListings.classList.add("hidden");
   main.classList.remove("hidden");
   fieldSet.disabled = false;
+  priceRange.selectedIndex = "0";
+  userPriceRange = null;
 }
 
 function hideSearchPage(){
@@ -84,8 +86,12 @@ function returnSearch(){
 
 //Currency GET request
 function getCurrencyValue(){
-  getCurrency(selectCurrency.value);
-  nextPageButton.addEventListener("click", hidePage);
+    if(selectCurrency.value === "0"){
+      nextPageButton.removeEventListener("click", hidePage);
+    } else {
+      nextPageButton.addEventListener("click", hidePage);
+      getCurrency(selectCurrency.value)
+    }
 }
 
 function getCurrency(exchange){
@@ -99,7 +105,7 @@ function getCurrency(exchange){
   }
 
 function handleGetCurrencySuccess(value) {
-  baseCurrency = value
+    baseCurrency = value
 }
 
 function handleGetCurrencyError(error) {
