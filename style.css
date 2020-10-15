@@ -460,6 +460,10 @@ img {
     position: relative;
   }
 
+  .currencyButton {
+    bottom: 15%
+  }
+
   .modal-currency {
     width:350px;
   }
@@ -489,6 +493,10 @@ img {
 
   .submitSearch {
     right: 10%;
+  }
+
+  .backPageSearch, .submitSearch {
+    bottom: 5%
   }
 
   .listing {
