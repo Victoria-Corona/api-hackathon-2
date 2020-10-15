@@ -288,6 +288,10 @@ img {
     font-size: 20px;
   }
 
+  .currencyButton {
+    left: 45%;
+  }
+
   select, input, button {
     height: 40px;
     font-size: 20px;
@@ -345,6 +349,10 @@ img {
     font-size: 20px;
   }
 
+  .currencyButton {
+    left: 45%;
+  }
+
   select, input, button {
     height: 40px;
     font-size: 20px;
@@ -397,7 +405,8 @@ img {
   }
 
   .currencyButton {
-    bottom: 2%
+    bottom: 5%;
+    left: 42%
   }
 
   .appName {
@@ -432,7 +441,7 @@ img {
   }
 
   .backPage {
-    right: 35%
+    right: 35%;
   }
 
   .backPageSearch {
@@ -461,7 +470,8 @@ img {
   }
 
   .currencyButton {
-    bottom: 15%
+    bottom: 15%;
+    left: 35%
   }
 
   .modal-currency {
@@ -489,6 +499,7 @@ img {
 
   .backPage {
     left: 10%;
+    width: 20%;
   }
 
   .submitSearch {
