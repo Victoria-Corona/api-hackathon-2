@@ -60,6 +60,8 @@ function closeModal(){
   failedListings.classList.add("hidden");
   main.classList.remove("hidden");
   fieldSet.disabled = false;
+  priceRange.selectedIndex = "0";
+  userPriceRange = null;
 }
 
 function hideSearchPage(){
@@ -67,6 +69,7 @@ function hideSearchPage(){
   main.classList.remove("hidden");
   fieldSet.disabled = false;
   priceRange.selectedIndex = "0";
+  userPriceRange = null;
   while(listings.firstChild){
     listings.removeChild(listings.firstChild);
   }
@@ -76,14 +79,19 @@ function returnSearch(){
   failedModalOverlay.classList.add("hidden");
   modalCurrencyOverlay.classList.remove("hidden");
   fieldSet.disabled = false;
-  priceRange.value = 0;
+  priceRange.value = "0";
+  userPriceRange = null;
   main.classList.add("hidden");
 }
 
 //Currency GET request
 function getCurrencyValue(){
-  getCurrency(selectCurrency.value);
-  nextPageButton.addEventListener("click", hidePage);
+    if(selectCurrency.value === "0"){
+      nextPageButton.removeEventListener("click", hidePage);
+    } else {
+      nextPageButton.addEventListener("click", hidePage);
+      getCurrency(selectCurrency.value)
+    }
 }
 
 function getCurrency(exchange){
@@ -97,7 +105,7 @@ function getCurrency(exchange){
   }
 
 function handleGetCurrencySuccess(value) {
-  baseCurrency = value
+    baseCurrency = value
 }
 
 function handleGetCurrencyError(error) {
@@ -122,25 +130,21 @@ function getProducts(brand, product, tag) {
 
 function getPriceRange() {
   var ranges = {
-    '0':{
-      max: Infinity,
-      min: 0
-    },
     '1': {
       max: 10,
       min: 0
     },
     '2': {
       max: 20,
-      min: 11
+      min: 10
     },
     '3': {
       max: 30,
-      min: 21
+      min: 20
     },
     '4': {
       max: Infinity,
-      min: 31
+      min: 30
     }
   }
 
@@ -157,6 +161,7 @@ function handleGetProductsSuccess(data, brand){
   }
 
   const priceRange = getPriceRange()
+
   if(!priceRange) {
     renderListings(data, brand, product)
   } else {
@@ -177,7 +182,7 @@ function handleGetProductsError(error){
 }
 
 function getProductsPriceRange(value){
-  userPriceRange = priceRange.value;
+  userPriceRange = Number(priceRange.value);
 }
 
 function handleSubmitData(event){
@@ -196,12 +201,12 @@ function handleSubmitData(event){
     const productName = formData.get("product");
     const productBrand = formData.get("brand");
     const productTag = formData.get("tag")
+
     getProducts(productBrand, productName, productTag);
 
     form.reset();
     priceRange.selectedIndex = "0";
     fieldSet.disabled = true;
-    userPriceRange = null;
     formValidation.textContent = ""
   }
 }
